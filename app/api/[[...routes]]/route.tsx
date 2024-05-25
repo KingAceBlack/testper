@@ -49,14 +49,25 @@ const hoursRemaining = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
 const expirationTimeString = `${hoursRemaining.toString().padStart(2, '0')}:${minutesRemaining.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`;
 
 
-console.log('Time refined :',expirationTimeString);
+//console.log('Time refined :',expirationTimeString);
 type FarcasterID = string;
 type CurrentFrame = string;
+
+
+
+
+
+
 
 let farcasterid: FarcasterID = 'oexcess';
 let currentframe: CurrentFrame = 'level4';
 
-
+interface DataItem {
+  fid: string;
+  lastknownframe: string;
+  health: number; // Assuming 'health' is a number, adjust type if necessary
+  // Add other properties if there are any
+}
 
 async function addData(farcasterid: FarcasterID, currentframe: CurrentFrame) {
   const url = 'https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest'; // Ensure this is the correct endpoint
@@ -101,56 +112,35 @@ async function addData(farcasterid: FarcasterID, currentframe: CurrentFrame) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-//Define a function to fetch data from the specified URL
-async function fetchData() {
-  try {
-    // Make a fetch request to fetch data from the URL
-    const response = await fetch('https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest', {
-      method: 'GET',
-      headers: {
-    'Content-Type': 'application/json',
-    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA', // Replace 'your_api_key_here' with your actual API key
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA' // Replace 'your_token_here' with your actual token
-},
-    });
+// Function to fetch data
+async function fetchData(): Promise<DataItem[]> {
+  const url = 'https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest'; // Ensure this is the correct endpoint
 
-    // Check if the fetch request was successful
-    if (!response.ok) {
-      throw new Error('Failed to fetch data');
-    }
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': 'your_api_key_here', // Replace with your actual API key
+      'Authorization': 'Bearer your_token_here' // Replace with your actual token
+    },
+  });
 
-    // Parse the response JSON
-    const data = await response.json();
-
-    // Process the data as needed
-   // console.log('Fetched data:', data);
-
-    // Return the fetched data
-    return data;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error fetching data:', error.message);
-    } else {
-      console.error('Unexpected error:', error);
-    }
-    throw error;
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
   }
+
+  return await response.json();
 }
 
 
 
-// Call the fetchData function to fetch data
+
 fetchData()
-  .then((data) => {
-    // Handle the fetched data
-    // For example, pass the first item into a variable
+  .then((data: DataItem[]) => {
     const firstItem = data[0];
-    //console.log('First item:', firstItem);
+    console.log('First item:', firstItem);
 
-    //const fid = firstItem.fid;
-    //console.log('Farcaster ID:', fid);
-
-    const item = data.find(item => item.fid === farcasterid);
+    const item = data.find((item: DataItem) => item.fid === farcasterid);
 
     if (item) {
       // Update Health with the score of the found item
@@ -159,25 +149,24 @@ fetchData()
 
       let lastFrame = item.lastknownframe;
       progressMarker = { ...progressMarker, previousFrame: lastFrame };
-
     } else {
-
-      console.log('Item not found for the specified wallet_id');
-          addData(farcasterid, currentframe)
-          .then(() => {
-            console.log('Data updated successfully');
-          })
-          .catch((error) => {
-            console.error('Error updating data:', error.message);
-          }); 
+      console.log('Item not found for the specified farcasterid');
+      addData(farcasterid, currentframe)
+        .then(() => {
+          console.log('Data added successfully');
+        })
+        .catch((error) => {
+          if (error instanceof Error) {
+            console.error('Error adding data:', error.message);
+          } else {
+            console.error('Unexpected error:', error);
+          }
+        });
     }
-    
-    // Now you can use the 'firstItem' variable to access the first item's data
   })
-
   .catch((error) => {
     if (error instanceof Error) {
-      console.error('Error updating data:', error.message);
+      console.error('Error fetching data:', error.message);
     } else {
       console.error('Unexpected error:', error);
     }
