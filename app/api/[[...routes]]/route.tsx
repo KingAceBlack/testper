@@ -50,44 +50,46 @@ const expirationTimeString = `${hoursRemaining.toString().padStart(2, '0')}:${mi
 
 
 console.log('Time refined :',expirationTimeString);
+type FarcasterID = string;
+type CurrentFrame = string;
 
-let farcasterid = 'oexcess';
-let currentframe = 'level4';
+let farcasterid: FarcasterID = 'oexcess';
+let currentframe: CurrentFrame = 'level4';
 
 
 
-async function addData(farcasterid, currentframe) {
-  const url = 'https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest'; // Replace with your server's endpoint
+async function addData(farcasterid: FarcasterID, currentframe: CurrentFrame) {
+  const url = 'https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest'; // Ensure this is the correct endpoint
 
   const data = {
     fid: farcasterid,
     lastknownframe: currentframe,
-   
   };
 
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-    'Content-Type': 'application/json',
-    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA', // Replace 'your_api_key_here' with your actual API key
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA' // Replace 'your_token_here' with your actual token
-},
-      body: JSON.stringify(data)
+        'Content-Type': 'application/json',
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA', // Replace 'your_api_key_here' with your actual API key
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA' // Replace 'your_token_here' with your actual token
+      },
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
       throw new Error('Failed to update data');
     }
 
-    const responseData = await response.json();
+    const responseText = await response.text();
+    const responseData = responseText ? JSON.parse(responseText) : null;
+
     console.log('Data updated successfully:', responseData);
   } catch (error) {
     console.error('Error updating data:', error.message);
     throw error;
   }
 }
-
 
 
 
