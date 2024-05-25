@@ -86,11 +86,14 @@ async function addData(farcasterid: FarcasterID, currentframe: CurrentFrame) {
 
     console.log('Data updated successfully:', responseData);
   } catch (error) {
-    console.error('Error updating data:', error.message);
+    if (error instanceof Error) {
+      console.error('Error updating data:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 }
-
 
 
 
