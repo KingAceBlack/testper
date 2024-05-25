@@ -177,7 +177,7 @@ fetchData()
 
 
 
-async function updateData(farcasterid, currentframe) {
+async function updateData(farcasterid: FarcasterID, currentframe: CurrentFrame) {
   // Construct the URL using template literals
   const url = `https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest?fid=eq.${farcasterid}`;
    console.log(url);
