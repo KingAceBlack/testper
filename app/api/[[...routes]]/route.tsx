@@ -128,7 +128,11 @@ async function fetchData() {
     // Return the fetched data
     return data;
   } catch (error) {
-    console.error('Error fetching data:', error.message);
+    if (error instanceof Error) {
+      console.error('Error fetching data:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 }
@@ -172,7 +176,11 @@ fetchData()
   })
 
   .catch((error) => {
-    // Handle errors
+    if (error instanceof Error) {
+      console.error('Error updating data:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
   });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +218,11 @@ async function updateData(farcasterid, currentframe) {
 
     console.log('Data updated successfully:', responseData);
   } catch (error) {
-    console.error('Error updating data:', error.message);
+    if (error instanceof Error) {
+      console.error('Error updating data:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 }
@@ -392,8 +404,12 @@ app.frame('/level1', (c) => {
       console.log('Data updated successfully');
     })
     .catch((error) => {
+    if (error instanceof Error) {
       console.error('Error updating data:', error.message);
-    });
+    } else {
+      console.error('Unexpected error:', error);
+    }
+  });
 
     image = (
             <div
