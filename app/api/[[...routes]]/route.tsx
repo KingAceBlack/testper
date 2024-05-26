@@ -27,6 +27,7 @@ let expirationTimeRem = new Date(Date.now() + 60000);
 
 
 let progressMarker = {
+  startingFrame: '/intro',
   previousFrame: '/intro',
   expTime: expirationTimeRem.setHours(expirationTimeRem.getHours() + 2),
   
@@ -60,7 +61,7 @@ type CurrentFrame = string;
 
 
 let farcasterid: FarcasterID = 'abraham';
-let currentframe: CurrentFrame = 'level4';
+let currentframe: CurrentFrame = 'intro';
 
 interface DataItem {
   fid: string;
@@ -304,6 +305,7 @@ app.frame('/', async (c) => {
   //console.log('Context (c):', c);
   console.log('is Verified:', verified);
   console.log('is FrameData:', frameData);
+  console.log('is currentframe:', currentframe);
 
   
   return c.res({
@@ -346,9 +348,10 @@ app.frame('/next',async (c) => {
       console.log('Farcaster health:', Health);
 
       let lastFrame = item.lastknownframe;
-      progressMarker = { ...progressMarker, previousFrame: lastFrame };
+      progressMarker = { ...progressMarker, startingFrame: lastFrame };
     } else {
       console.log('Item not found for the specified farcasterid');
+      console.log('we are adding :', currentframe);
       await addData(farcasterid, currentframe);
       console.log('Data added successfully');
     }
@@ -391,7 +394,7 @@ app.frame('/intro', (c) => {
 
 
 
-  if (progressMarker.previousFrame === '/intro') {
+  if (progressMarker.startingFrame === '/intro') {
     //fail
     image = (
             <div
@@ -459,7 +462,7 @@ app.frame('/intro', (c) => {
         );
 
         intents = [
-            <Button action={`/${progressMarker.previousFrame}`}>Continue</Button>
+            <Button action={`/${progressMarker.startingFrame}`}>Continue</Button>
 
         ];
 
