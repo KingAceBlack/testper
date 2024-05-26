@@ -256,7 +256,7 @@ async function updateData(farcasterid: FarcasterID, currentframe: CurrentFrame) 
 
 
 
-
+//let farcasterid: FarcasterID = 'oexcess';
 
 app.frame('/', async (c) => {
   const { frameData, verified } = c;
@@ -265,12 +265,13 @@ app.frame('/', async (c) => {
   console.log('frameData', frameData);
 
   const { fid } = frameData || {};
-  farcasterid = fid ? String(fid) : farcasterid; // Use existing farcasterid if fid is undefined
+  farcasterid = fid !== undefined ? String(fid) : farcasterid;// Use existing farcasterid if fid is undefined
+  console.log('real id is:', farcasterid);
 
   try {
     const data: DataItem[] = await fetchData();
     const firstItem = data[0];
-    console.log('First item:', firstItem);
+    
 
     const item = data.find((item: DataItem) => item.fid === farcasterid);
 
