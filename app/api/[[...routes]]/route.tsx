@@ -265,7 +265,7 @@ app.frame('/', async (c) => {
   console.log('frameData', frameData);
 
   const { fid } = frameData || {};
-  farcasterid = fid || farcasterid; // Use existing farcasterid if fid is undefined
+  farcasterid = fid ? String(fid) : farcasterid; // Use existing farcasterid if fid is undefined
 
   try {
     const data: DataItem[] = await fetchData();
