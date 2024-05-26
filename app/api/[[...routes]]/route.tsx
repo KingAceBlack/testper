@@ -256,61 +256,59 @@ async function updateData(farcasterid: FarcasterID, currentframe: CurrentFrame) 
 
 
 
-app.frame('/', (c) => {
-    const {frameData, verified} = c
 
-    console.log('verified', verified)
-    console.log('frameData', frameData)
 
-    const {fid} = frameData || {}
-    farcasterid = fid
+app.frame('/', async (c) => {
+  const { frameData, verified } = c;
 
-      fetchData()
-      .then((data: DataItem[]) => {
-        const firstItem = data[0];
-        console.log('First item:', firstItem);
+  console.log('verified', verified);
+  console.log('frameData', frameData);
 
-        const item = data.find((item: DataItem) => item.fid === farcasterid);
+  const { fid } = frameData || {};
+  farcasterid = fid || farcasterid; // Use existing farcasterid if fid is undefined
 
-        if (item) {
-          // Update Health with the score of the found item
-          let Health = item.health;
-          console.log('Farcaster health:', Health);
+  try {
+    const data: DataItem[] = await fetchData();
+    const firstItem = data[0];
+    console.log('First item:', firstItem);
 
-          let lastFrame = item.lastknownframe;
-          progressMarker = { ...progressMarker, previousFrame: lastFrame };
-        } else {
-          console.log('Item not found for the specified farcasterid');
-          addData(farcasterid, currentframe)
-            .then(() => {
-              console.log('Data added successfully');
-            })
-            .catch((error) => {
-              if (error instanceof Error) {
-                console.error('Error adding data:', error.message);
-              } else {
-                console.error('Unexpected error:', error);
-              }
-            });
-        }
-      })
-      .catch((error) => {
-        if (error instanceof Error) {
-          console.error('Error fetching data:', error.message);
-        } else {
-          console.error('Unexpected error:', error);
-        }
-      });
-    
-    console.log('farcasterid', fid)
-    return c.res({
-        image: 'https://gateway.pinata.cloud/ipfs/QmWa1pMBg9xMTxT4MvSGNPqYFvX3Zw3umBE6DYmDtX1fEq',
-        intents: [
-            //<Button action={enemy1.name}>Continue</Button>, // example of how to pass a variable to the button
-            <Button action="/next">Continue</Button>,
-        ],
-    });
+    const item = data.find((item: DataItem) => item.fid === farcasterid);
+
+    if (item) {
+      // Update Health with the score of the found item
+      let Health = item.health;
+      console.log('Farcaster health:', Health);
+
+      let lastFrame = item.lastknownframe;
+      progressMarker = { ...progressMarker, previousFrame: lastFrame };
+    } else {
+      console.log('Item not found for the specified farcasterid');
+      await addData(farcasterid, currentframe);
+      console.log('Data added successfully');
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error fetching data:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+  }
+
+  console.log('farcasterid', farcasterid);
+  return c.res({
+    image: 'https://gateway.pinata.cloud/ipfs/QmWa1pMBg9xMTxT4MvSGNPqYFvX3Zw3umBE6DYmDtX1fEq',
+    intents: [
+      //<Button action={enemy1.name}>Continue</Button>, // example of how to pass a variable to the button
+      <Button action="/next">Continue</Button>,
+    ],
+  });
 });
+
+
+
+
+
+
 
 
 app.frame('/next', (c) => {
