@@ -5,12 +5,12 @@ import { devtools } from 'frog/dev'
 // import { neynar } from 'frog/hubs'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
-import { pinata } from 'frog/hubs'
+//import { pinata } from 'frog/hubs'
 
 const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
-   hub: pinata(),
+   //hub: pinata(),
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 })
@@ -59,7 +59,7 @@ type CurrentFrame = string;
 
 
 
-let farcasterid: FarcasterID = 'oexcess';
+let farcasterid: FarcasterID = 'abraham';
 let currentframe: CurrentFrame = 'level4';
 
 interface DataItem {
@@ -113,7 +113,7 @@ async function addData(farcasterid: FarcasterID, currentframe: CurrentFrame) {
 
 
 // Function to fetch data
-async function fetchData(): Promise<DataItem[]> {
+/*async function fetchData(): Promise<DataItem[]> {
   const url = 'https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest'; // Ensure this is the correct endpoint
 
   const response = await fetch(url, {
@@ -130,9 +130,30 @@ async function fetchData(): Promise<DataItem[]> {
   }
 
   return await response.json();
+}*/
+
+async function fetchData(): Promise<DataItem[]> {
+  const url = 'https://gpzytjchmkcglwzkxcrc.supabase.co/rest/v1/warpcastertest';
+
+  try {
+    const response = await withTimeout(fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA', // Replace 'your_api_key_here' with your actual API key
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA' // Replace 'your_token_here' with your actual token
+      },
+    }), 5000);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
 }
-
-
 
 
 /*fetchData()
