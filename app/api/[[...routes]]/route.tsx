@@ -119,10 +119,10 @@ async function fetchData(): Promise<DataItem[]> {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-      'apikey': 'your_api_key_here', // Replace with your actual API key
-      'Authorization': 'Bearer your_token_here' // Replace with your actual token
-    },
+        'Content-Type': 'application/json',
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA', // Replace 'your_api_key_here' with your actual API key
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdwenl0amNobWtjZ2x3emt4Y3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5NDEyNzMsImV4cCI6MjAyMzUxNzI3M30.pX9wyf_-ctCHCk0cz-gpsEg9HP-mer9A3_1m-DjSOvA' // Replace 'your_token_here' with your actual token
+      },
   });
 
   if (!response.ok) {
@@ -135,7 +135,7 @@ async function fetchData(): Promise<DataItem[]> {
 
 
 
-fetchData()
+/*fetchData()
   .then((data: DataItem[]) => {
     const firstItem = data[0];
     console.log('First item:', firstItem);
@@ -170,7 +170,7 @@ fetchData()
     } else {
       console.error('Unexpected error:', error);
     }
-  });
+  });*/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -262,7 +262,45 @@ app.frame('/', (c) => {
     console.log('verified', verified)
     console.log('frameData', frameData)
 
-    const {fid} = frameData || {}
+    const {farid} = frameData || {}
+    farcasterid = farid
+
+      fetchData()
+      .then((data: DataItem[]) => {
+        const firstItem = data[0];
+        console.log('First item:', firstItem);
+
+        const item = data.find((item: DataItem) => item.fid === farcasterid);
+
+        if (item) {
+          // Update Health with the score of the found item
+          let Health = item.health;
+          console.log('Farcaster health:', Health);
+
+          let lastFrame = item.lastknownframe;
+          progressMarker = { ...progressMarker, previousFrame: lastFrame };
+        } else {
+          console.log('Item not found for the specified farcasterid');
+          addData(farcasterid, currentframe)
+            .then(() => {
+              console.log('Data added successfully');
+            })
+            .catch((error) => {
+              if (error instanceof Error) {
+                console.error('Error adding data:', error.message);
+              } else {
+                console.error('Unexpected error:', error);
+              }
+            });
+        }
+      })
+      .catch((error) => {
+        if (error instanceof Error) {
+          console.error('Error fetching data:', error.message);
+        } else {
+          console.error('Unexpected error:', error);
+        }
+      });
     
     console.log('farcasterid', fid)
     return c.res({
