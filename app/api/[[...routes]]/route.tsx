@@ -262,8 +262,8 @@ app.frame('/', (c) => {
     console.log('verified', verified)
     console.log('frameData', frameData)
 
-    const {farid} = frameData || {}
-    farcasterid = farid
+    const {fid} = frameData || {}
+    farcasterid = fid
 
       fetchData()
       .then((data: DataItem[]) => {
