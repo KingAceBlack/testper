@@ -259,10 +259,35 @@ async function updateData(farcasterid: FarcasterID, currentframe: CurrentFrame) 
 //let farcasterid: FarcasterID = 'oexcess';
 
 app.frame('/', async (c) => {
-  const { frameData, verified } = c;
+  const { buttonValue, inputText, status, frameData, verified } = c;
 
-  console.log('verified', verified);
-  console.log('frameData', frameData);
+  //console.log('Context (c):', c);
+  console.log('is Verified:', verified);
+  console.log('is FrameData:', frameData);
+
+  
+  return c.res({
+    image: 'https://gateway.pinata.cloud/ipfs/QmbqkRCSckEqBCbmhmnciaV6TMkWs5FGpcHhy8vdGbGuaC',
+    intents: [
+      //<Button action={enemy1.name}>Continue</Button>, // example of how to pass a variable to the button
+      <Button action="/next">Continue</Button>,
+    ],
+  });
+});
+
+
+
+
+
+
+
+
+app.frame('/next',async (c) => {
+    const { buttonValue, inputText, status, frameData, verified } = c;
+
+  console.log('Context (c):', c);
+  console.log('Verified:', verified);
+  console.log('FrameData:', frameData);
 
   const { fid } = frameData || {};
   farcasterid = fid !== undefined ? String(fid) : farcasterid;// Use existing farcasterid if fid is undefined
@@ -295,35 +320,28 @@ app.frame('/', async (c) => {
     }
   }
 
-  console.log('farcasterid', farcasterid);
-  return c.res({
-    image: 'https://gateway.pinata.cloud/ipfs/QmWa1pMBg9xMTxT4MvSGNPqYFvX3Zw3umBE6DYmDtX1fEq',
-    intents: [
-      //<Button action={enemy1.name}>Continue</Button>, // example of how to pass a variable to the button
-      <Button action="/next">Continue</Button>,
-    ],
-  });
-});
-
-
-
-
-
-
-
-
-app.frame('/next', (c) => {
-
-
     return c.res({
-        image: 'https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8',
+        image: 'https://gateway.pinata.cloud/ipfs/QmYxRrdLyBmkb6w7ehzQnGBCCKfAFVDYUuXUyWqE1VpGHJ',
         intents: [
             
-            <Button action="/intro">Continue</Button>,
+            <Button action="/loading">Load Info</Button>,
         ],
     });
 });
 
+
+app.frame('/loading', async (c) => {
+
+
+  
+  return c.res({
+    image: 'https://gateway.pinata.cloud/ipfs/Qmd854TcxRNNoRFxSLAkHhgwS2asVqBwYcjGwpT1APEnJv',
+    intents: [
+      //<Button action={enemy1.name}>Continue</Button>, // example of how to pass a variable to the button
+      <Button action="/intro">Continue</Button>,
+    ],
+  });
+});
 
 
 app.frame('/intro', (c) => {
@@ -339,7 +357,7 @@ app.frame('/intro', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -375,7 +393,7 @@ app.frame('/intro', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -417,6 +435,8 @@ app.frame('/intro', (c) => {
 
 
 
+
+
 app.frame('/level1', (c) => {
 
   let image;
@@ -441,7 +461,7 @@ app.frame('/level1', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -501,7 +521,7 @@ app.frame('/level2', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -561,7 +581,7 @@ app.frame('/level3', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -622,7 +642,7 @@ app.frame('/level4', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -683,7 +703,7 @@ app.frame('/level5', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -745,7 +765,7 @@ app.frame('/level6', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
@@ -805,7 +825,7 @@ app.frame('/level7', (c) => {
             <div
                 style={{
                     alignItems: 'center',
-                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/Qmeh4wiW53885vpLds3znH6W5sXs8c6E9KEDbGJBmrKRC8)',
+                    backgroundImage: 'url(https://gateway.pinata.cloud/ipfs/QmcvnPFeYRWkH4qPagsDHiom4p2yUrfistTX7HheBPwawM)',
                     backgroundSize: '100% 100%',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
