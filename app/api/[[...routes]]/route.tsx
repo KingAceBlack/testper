@@ -75,7 +75,7 @@ async function addData(farcasterid: FarcasterID, currentframe: CurrentFrame) {
 
   const data = {
     fid: farcasterid,
-    lastknownframe: currentframe,
+    lastknownframe: 'intro',
   };
 
   try {
@@ -301,6 +301,8 @@ async function updateData(farcasterid: FarcasterID, currentframe: CurrentFrame) 
 
 app.frame('/', async (c) => {
   const { buttonValue, inputText, status, frameData, verified } = c;
+  farcasterid = 'abraham';
+  currentframe = 'intro';
 
   //console.log('Context (c):', c);
   console.log('is Verified:', verified);
@@ -584,7 +586,7 @@ app.frame('/level2', (c) => {
                     whiteSpace: 'pre-wrap',
                 }}
             >
-                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'red'  }}> {`You are in Level 2`} </p>
+                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'blue'  }}> {`You are in Level 2`} </p>
               
             </div>
         );
@@ -644,7 +646,7 @@ app.frame('/level3', (c) => {
                     whiteSpace: 'pre-wrap',
                 }}
             >
-                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'red'  }}> {`You are in Level 3`} </p>
+                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'green'  }}> {`You are in Level 3`} </p>
               
             </div>
         );
@@ -766,7 +768,7 @@ app.frame('/level5', (c) => {
                     whiteSpace: 'pre-wrap',
                 }}
             >
-                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'red'  }}> {`You are in Level 5`} </p>
+                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'yellow'  }}> {`You are in Level 5`} </p>
               
             </div>
         );
@@ -828,7 +830,7 @@ app.frame('/level6', (c) => {
                     whiteSpace: 'pre-wrap',
                 }}
             >
-                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'red'  }}> {`You are in Level 6`} </p>
+                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'white'  }}> {`You are in Level 6`} </p>
               
             </div>
         );
@@ -888,13 +890,13 @@ app.frame('/level7', (c) => {
                     whiteSpace: 'pre-wrap',
                 }}
             >
-                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'red'  }}> {`You are in Level 7`} </p>
+                <p style={{ fontSize : '50px', margin : '0', marginTop : '-500', color: 'purple'  }}> {`You are in Level 7`} </p>
               
             </div>
         );
 
         intents = [
-            <Button action="/">Continue</Button>
+            <Button action="/level1">Continue</Button>
         ];
     
 
